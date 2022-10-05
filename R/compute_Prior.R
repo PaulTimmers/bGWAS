@@ -139,7 +139,7 @@ compute_prior <- function(selected_studies, MR_ZMatrix, All_ZMatrix, GWASData, r
 
     
     d_test %>%
-      bind_rows(all.priors, .data$.) -> all.priors
+      bind_rows(all.priors, .) -> all.priors
     
   
     # subset - MR instruments only
@@ -149,7 +149,7 @@ compute_prior <- function(selected_studies, MR_ZMatrix, All_ZMatrix, GWASData, r
       select(Obs=6,
              Pred=7) %>%
       mutate(Res=.data$Obs-.data$Pred) %>%
-      bind_rows(OutOfSample, .data$.) -> OutOfSample
+      bind_rows(OutOfSample, .) -> OutOfSample
     
   }
   
@@ -170,7 +170,7 @@ compute_prior <- function(selected_studies, MR_ZMatrix, All_ZMatrix, GWASData, r
   
   Zlimit <- stats::qnorm(0.001/2, lower.tail = F)
   all.priors %>%
-    filter_at(vars(6), any_vars(abs(.data$.)>Zlimit)) -> SNPs_moderateeffect
+    filter_at(vars(6), any_vars(abs(.)>Zlimit)) -> SNPs_moderateeffect
   tmp = paste0("## Correlation between prior and observed effects for SNPs with GWAS p-value < 0.001 is ", round(stats::cor(SNPs_moderateeffect[,6:7])[1,2], 4), "\n")
   Log = update_log(Log, tmp, verbose)
   
